@@ -52,8 +52,8 @@ yarn-debug.log*
 yarn-error.log*
 
 ### Secrets & Local Config (보안 주의!) ###
-application-secret.yml
-application-real.yml
+application.yml
 application-local.yml
+application-dev.yml
 api_keys.json
 .env

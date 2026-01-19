@@ -4,11 +4,10 @@ import com.teamminari.gongjang.global.common.BaseTimeEntity;
 import com.teamminari.gongjang.product.entity.Product;
 import com.teamminari.gongjang.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(
         name = "cart_items",
@@ -22,7 +21,6 @@ public class CartItem extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,18 +31,11 @@ public class CartItem extends BaseTimeEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Builder.Default
     @Column(nullable = false)
     private Integer quantity = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "checked_by")
-    private User checkedBy;
-
-    @Builder
-    public CartItem(Cart cart, Product product, Integer quantity, User checkedBy) {
-        this.cart = cart;
-        this.product = product;
-        this.quantity = quantity != null ? quantity : 1;
-        this.checkedBy = checkedBy;
-    }
+    @JoinColumn(name = "checker_id")
+    private User checker;
 }

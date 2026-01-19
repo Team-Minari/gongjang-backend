@@ -3,11 +3,10 @@ package com.teamminari.gongjang.product.entity;
 
 import com.teamminari.gongjang.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "products")
 @Getter
@@ -16,13 +15,12 @@ public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "image_url", nullable = false, length = 255)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -34,17 +32,6 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer stock;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String category;
-
-    @Builder
-    public Product(String imageUrl, String name, String description,
-                   Integer price, Integer stock, String category) {
-        this.imageUrl = imageUrl;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-        this.category = category;
-    }
 }

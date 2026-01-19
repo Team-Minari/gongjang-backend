@@ -2,13 +2,12 @@ package com.teamminari.gongjang.cart.entity;
 
 import com.teamminari.gongjang.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(
         name = "cart_participants",
@@ -22,7 +21,6 @@ public class CartParticipant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_participant_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,14 +35,7 @@ public class CartParticipant {
     @Column(nullable = false, length = 20)
     private CartParticipantRole role;
 
-    @Column(name = "joined_at", nullable = false)
-    private LocalDateTime joinedAt;
-
-    @Builder
-    public CartParticipant(Cart cart, User user, CartParticipantRole role) {
-        this.cart = cart;
-        this.user = user;
-        this.role = role;
-        this.joinedAt = LocalDateTime.now();
-    }
+    @Builder.Default
+    @Column(name = "joined_at", nullable = false, updatable = false)
+    private LocalDateTime joinedAt = LocalDateTime.now();
 }

@@ -8,10 +8,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "cart_comments")
+@Table(name = "cart_item_comments")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CartComment extends BaseTimeEntity {
+public class CartItemComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

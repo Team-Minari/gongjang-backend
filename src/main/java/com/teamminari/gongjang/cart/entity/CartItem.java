@@ -31,8 +31,9 @@ public class CartItem extends BaseTimeEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Builder.Default
     @Column(nullable = false)
-    private Integer quantity;
+    private Integer quantity = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "checker_id")

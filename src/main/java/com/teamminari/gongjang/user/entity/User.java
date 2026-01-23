@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "users")
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"oauth_provider", "oauth_provider_id"})
+})
+@Entity
 public class User extends BaseTimeEntity {
 
     @Id
@@ -29,4 +31,11 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private UserStatus status = UserStatus.ACTIVE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "oauth_provider", nullable = false, length = 20)
+    private OAuthProvider oauthProvider;
+
+    @Column(name = "oauth_provider_id", nullable = false)
+    private String oauthProviderId;
 }

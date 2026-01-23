@@ -1,6 +1,7 @@
 package com.teamminari.gongjang.auth.entity;
 
 import com.teamminari.gongjang.global.common.BaseTimeEntity;
+import com.teamminari.gongjang.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,8 +24,9 @@ public class RefreshToken extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, unique = true, length = 500)
     private String token;

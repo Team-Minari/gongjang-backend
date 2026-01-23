@@ -54,7 +54,7 @@ public class AuthService {
         User user = findOrCreateUser(userInfo);
 
         // 4. JWT 토큰 발급
-        return createTokenResponse(user.getId());
+        return createTokenResponse(user);
     }
 
     // 사용자 조회 또는 생성
@@ -74,11 +74,11 @@ public class AuthService {
     }
 
     // JWT 토큰 생성 및 Refresh Token 저장
-    private TokenResponse createTokenResponse(Long userId) {
-        String accessToken = jwtTokenProvider.createAccessToken(userId);
-        String refreshToken = jwtTokenProvider.createRefreshToken(userId);
+    private TokenResponse createTokenResponse(User user) {
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
 
-        saveRefreshToken(userId, refreshToken);
+        saveRefreshToken(user, refreshToken);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -89,16 +89,16 @@ public class AuthService {
     }
 
     // Refresh Token 저장 (기존 토큰 있으면 갱신)
-    private void saveRefreshToken(Long userId, String token) {
+    private void saveRefreshToken(User user, String token) {
         LocalDateTime expiresAt = LocalDateTime.now()
                 .plusSeconds(jwtProperties.refreshTokenValidity() / 1000);
 
-        refreshTokenRepository.findByUserId(userId)
+        refreshTokenRepository.findByUserId(user.getId())
                 .ifPresentOrElse(
                         existing -> existing.updateToken(token, expiresAt),
                         () -> refreshTokenRepository.save(
                                 RefreshToken.builder()
-                                        .userId(userId)
+                                        .user(user)
                                         .token(token)
                                         .expiresAt(expiresAt)
                                         .build()
@@ -120,7 +120,7 @@ public class AuthService {
         }
 
         // 새 토큰 발급
-        return createTokenResponse(storedToken.getUserId());
+        return createTokenResponse(storedToken.getUser());
     }
 
     // 로그아웃 (Refresh Token 삭제)
